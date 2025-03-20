@@ -7,16 +7,34 @@ test('Create Transfer', async ({ page }) => {
   await page.getByRole('button', { name: 'Create Transfer'}).click();
   await page.getByRole('textbox', { name: 'Details' }).fill('Annual pro subscription fee');
   await page.getByRole('textbox', { name: 'price' }).fill('$10.00');
-  //await page.getByRole('radio', { name: 'None - 0%' }).check();
-  //await (page.getByRole('radio', { name: 'sales-tax' }).nth(1)).click();
-  await (page.locator('.mat-radio-container').nth(1)).click(); //
-
   
+  const checkbox = page.getByRole('radiogroup').nth(0); // nth(1) to skip the header row and select the first data row
+  await checkbox.getByText(' GST - 5% ').check();
+
   await page.getByRole('button', { name: 'Add'}).click();
  
-  const firstRow = page.getByRole('row').nth(1); // nth(1) to skip the header row and select the first data row
+  const firstRow = page.getByRole('rowgroup').nth(1); // nth(1) to skip the header row and select the first data row
   await expect(firstRow.getByRole('gridcell').nth(0)).toHaveText('24');
   await expect(firstRow.getByRole('gridcell').nth(1)).toHaveText('Mar 20, 2025');
   await expect(firstRow.getByRole('gridcell').nth(2)).toHaveText('Annual pro subscription fee');
   });
 });
+
+
+// //verify from browser console
+
+// // Verify the first data row
+// const firstRow = document.querySelectorAll('[role="rowgroup"]')[1]; // nth(1) to skip the header row and select the first data row
+// console.log(firstRow);
+
+// // Verify the first cell in the first data row
+// const firstCell = firstRow.querySelectorAll('[role="gridcell"]')[0];
+// console.log(firstCell.textContent);
+
+// // Verify the second cell in the first data row
+// const secondCell = firstRow.querySelectorAll('[role="gridcell"]')[1];
+// console.log(secondCell.textContent);
+
+// // Verify the third cell in the first data row
+// const thirdCell = firstRow.querySelectorAll('[role="gridcell"]')[2];
+// console.log(thirdCell.textContent);
